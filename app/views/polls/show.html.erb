@@ -33,7 +33,23 @@
 	<% else %>
 	
 	<% @poll.questions.each do |question| %>
-		<p><%= question.description %>
+		<p>
+			<%= question.description %>
+		</p>
+		<p>
+			<%= form_for [question, @answer = Answer.new], :html => { :class => 'form-horizontal' } do |f| %>
+			  <div class="control-group">
+			    <div class="controls">
+			      <%= f.text_field :body, :class => 'text_field' %>
+			    </div>
+			  </div>
+			  <br>
+			  <div class="form-actions">
+			    <%= f.submit "Submit answer", :class => 'btn btn-primary' %>
+			    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+			                polls_path, :class => 'btn' %>
+			  </div>
+			<% end %>
 		</p>
 	<% end %>
 	
