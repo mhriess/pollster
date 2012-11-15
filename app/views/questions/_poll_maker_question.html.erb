@@ -2,4 +2,18 @@
 	<%= question.description %> | 
 	<%= link_to "Edit", edit_poll_question_path(@poll, question) %> |
 	<%= link_to "Delete", poll_question_path(@poll, question), method: :delete, :remote => true %>
+	<table class="table table-condensed table-striped table-bordered">
+		<thead>
+			<tr>
+				<th>Submission Time</th>
+				<th>Answer</th>
+			</tr>
+		</thead>
+		<% question.answers.each do |answer| %>
+		<tr>
+			<th><%= answer.created_at %></th>
+			<th><%= answer.body %></th>
+		</tr>
+		<% end %>
+	</table>
 <% end %>
