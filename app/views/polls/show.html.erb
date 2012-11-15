@@ -1,57 +1,24 @@
 <%- model_class = Poll -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human %></h1>
+  <h1><%=t '.title', :default => @poll.name %>
+	<% if params[:id].to_i > 0 %>  |
+	    <%= link_to "Public view", @poll.vanity_url %>
+	<% end %>
+  </h1>
 </div>
 
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
-  <dd><%= @poll.name %></dd>
-</dl>
-
-<div class="form-actions">
-  <%= link_to t('.back', :default => t("helpers.links.back")),
-              polls_path, :class => 'btn'  %>
-  <%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_poll_path(@poll), :class => 'btn' %>
-  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              poll_path(@poll),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>
-</div>
 <hr>
 <% if params[:id].to_i > 0 %>
-	<% @poll.questions.each do |question| %>
-		<p><%= question.description %> | 
-		   <%= link_to "Edit", edit_poll_question_path(@poll, question) %> |
-		   <%= link_to "Delete", poll_question_path(@poll, question), method: :delete, data: { confirm: 'Are you sure?' } %>
-		</p>
-	<% end %>
+<div class="questions">	
+	<%= render 'poll_maker_nav'%>
 	
+	<%= render :partial => 'questions/poll_maker_question', :collection => @poll.questions, :as => :question || 'No questions have been added yet!' %>
+</div>
 	<%= render 'questions/form' %>
-	
-	<% else %>
-	
-	<% @poll.questions.each do |question| %>
-		<p>
-			<%= question.description %>
-		</p>
-		<p>
-			<%= form_for [question, @answer = Answer.new], :html => { :class => 'form-horizontal' } do |f| %>
-			  <div class="control-group">
-			    <div class="controls">
-			      <%= f.text_field :body, :class => 'text_field' %>
-			    </div>
-			  </div>
-			  <br>
-			  <div class="form-actions">
-			    <%= f.submit "Submit answer", :class => 'btn btn-primary' %>
-			    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-			                polls_path, :class => 'btn' %>
-			  </div>
-			<% end %>
-		</p>
-	<% end %>
+
+<% else %>
+
+	<%= render :partial => 'answers/form', :collection => @poll.questions, :as => :question || 'No questions have been added yet!' %>
 	
 <% end %>
 

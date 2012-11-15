@@ -1,0 +1,6 @@
+$question = $('#<%= dom_id(@question) %>')
+$question.children().not('p').fadeOut(50);
+if ($question.get(0) === $('.question').last().get(0)){
+	window.location.href = ("http://qkme.me/3rsaxi");
+}
+// $('#<%= dom_id(@question) %>').replaceWith("Answer submitted!");

@@ -2,10 +2,10 @@ class QuestionsController < ApplicationController
   def create
     @poll = Poll.find(params[:poll_id])
     @question = @poll.questions.build(params[:question])
+    @question.save
+    @questions = @poll.questions
     
-    if @question.save
-      redirect_to @question.poll
-    end
+    respond_to { |format| format.js }
   end
 
   def edit
@@ -23,8 +23,7 @@ class QuestionsController < ApplicationController
   def destroy
     @question = Question.find(params[:id])
     @question.destroy
-    @poll = Poll.find(params[:poll_id])
     
-    redirect_to @poll
+    respond_to { |format| format.js }
   end
 end

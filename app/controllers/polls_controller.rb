@@ -36,14 +36,16 @@ class PollsController < ApplicationController
   def destroy
     @poll = Poll.find(params[:id])
     @poll.destroy
-    
+        
     redirect_to root_path
   end
   
   def update
     @poll = Poll.find(params[:id])
-    @poll.update_attributes(params[:poll])
-    
-    redirect_to @poll
+    if @poll.update_attributes(params[:poll])
+      redirect_to @poll
+    else
+      render :edit
+    end
   end
 end
